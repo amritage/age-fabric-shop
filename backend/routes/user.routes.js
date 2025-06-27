@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controller/user.controller');
+const verifyToken = require('../middleware/verifyToken');
 
 // add a user
 router.post('/signup', userController.signup);
@@ -15,7 +16,7 @@ router.patch('/change-password', userController.changePassword);
 // confirmEmail
 router.get('/confirmEmail/:token', userController.confirmEmail);
 // updateUser
-router.put('/update-user/:id', userController.updateUser);
+router.put('/update-user/:id', verifyToken, userController.updateUser);
 // register or login with google
 router.post('/register/:token', userController.signUpWithProvider);
 

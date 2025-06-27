@@ -295,8 +295,8 @@ exports.updateUser = async (req, res, next) => {
 // signUpWithProvider
 exports.signUpWithProvider = async (req, res, next) => {
   try {
-    const user = jwt.decode(req.params.token);
-    const isAdded = await User.findOne({ email: user.email });
+    const payload = jwt.verify(req.params.token, process.env.JWT_SECRET);
+    const isAdded = await User.findOne({ email: payload.email });
     if (isAdded) {
       const token = generateToken(isAdded);
       res.status(200).send({
@@ -316,14 +316,12 @@ exports.signUpWithProvider = async (req, res, next) => {
       });
     } else {
       const newUser = new User({
-        name: user.name,
-        email: user.email,
-        imageURL: user.picture,
+        name: payload.name,
+        email: payload.email,
+        imageURL: payload.picture,
         status: 'active',
       });
-
       const signUpUser = await newUser.save();
-      // console.log(signUpUser)
       const token = generateToken(signUpUser);
       res.status(200).send({
         status: 'success',
