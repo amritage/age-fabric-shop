@@ -79,6 +79,14 @@ exports.getPopularProductServiceByType = async (type) => {
     { $addFields: { reviewCount: { $size: '$reviews' } } },
     { $sort: { reviewCount: -1 } },
     { $limit: 8 },
+    {
+      $lookup: {
+        from: 'reviews',
+        localField: '_id',
+        foreignField: 'productId',
+        as: 'reviews',
+      },
+    },
   ]).populate('reviews');
   return products;
 };
