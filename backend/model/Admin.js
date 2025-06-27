@@ -49,7 +49,7 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: true,
       default: 'Admin',
-      enum: ['Admin', 'Super Admin', 'Manager', 'CEO'],
+      enum: ['Admin', 'SuperAdmin', 'Manager', 'CEO'],
     },
     joiningDate: {
       type: Date,
