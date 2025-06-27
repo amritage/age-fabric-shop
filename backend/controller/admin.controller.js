@@ -32,7 +32,7 @@ const registerAdmin = async (req, res, next) => {
         name: staff.name,
         email: staff.email,
         role: staff.role,
-        joiningData: Date.now(),
+        joiningDate: Date.now(),
       });
     }
   } catch (err) {
@@ -121,7 +121,7 @@ const confirmAdminForgetPass = async (req, res, next) => {
       });
     }
 
-    const expired = new Date() > new Date(user.confirmationTokenExpires);
+    const expired = new Date() > new Date(admin.confirmationTokenExpires);
 
     if (expired) {
       return res.status(401).json({
@@ -244,13 +244,19 @@ const getStaffById = async (req, res, next) => {
 // updateStaff
 const updateStaff = async (req, res) => {
   try {
+    // Only allow if the requesting admin is the same as the target or has privileged role
+    if (req.user.role !== 'SuperAdmin' && req.user._id !== req.params.id) {
+      return res
+        .status(403)
+        .json({ message: 'Not authorized to update this staff.' });
+    }
     const admin = await Admin.findOne({ _id: req.params.id });
     if (admin) {
       admin.name = req.body.name;
       admin.email = req.body.email;
       admin.phone = req.body.phone;
       admin.role = req.body.role;
-      admin.joiningData = req.body.joiningDate;
+      admin.joiningDate = req.body.joiningDate;
       admin.image = req.body.image;
       admin.password =
         req.body.password !== undefined
@@ -281,6 +287,12 @@ const updateStaff = async (req, res) => {
 // deleteStaff
 const deleteStaff = async (req, res, next) => {
   try {
+    // Only allow if the requesting admin is the same as the target or has privileged role
+    if (req.user.role !== 'SuperAdmin' && req.user._id !== req.params.id) {
+      return res
+        .status(403)
+        .json({ message: 'Not authorized to delete this staff.' });
+    }
     await Admin.findByIdAndDelete(req.params.id);
     res.status(200).json({
       message: 'Admin Deleted Successfully',

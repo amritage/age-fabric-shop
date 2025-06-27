@@ -21,7 +21,6 @@ exports.signup = async (req, res, next) => {
       const mailData = {
         from: secret.email_user,
         to: `${req.body.email}`,
-        subject: 'Email Activation',
         subject: 'Verify Your Email',
         html: `<h2>Hello ${req.body.name}</h2>
         <p>Verify your email address to complete the signup and login into your <strong>shofy</strong> account.</p>

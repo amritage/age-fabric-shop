@@ -10,8 +10,8 @@ exports.addReview = async (req, res, next) => {
   try {
     // Check if the user has already left a review for this product
     const existingReview = await Review.findOne({
-      user: userId,
-      product: productId,
+      userId: userId,
+      productId: productId,
     });
 
     if (existingReview) {
@@ -20,7 +20,7 @@ exports.addReview = async (req, res, next) => {
         .json({ message: 'You have already left a review for this product.' });
     }
     const checkPurchase = await Order.findOne({
-      user: new mongoose.Types.ObjectId(userId),
+      userId: new mongoose.Types.ObjectId(userId),
       'cart._id': { $in: [productId] },
     });
     if (!checkPurchase) {
