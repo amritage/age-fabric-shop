@@ -12,7 +12,6 @@ const {
   deleteStaff,
   getStaffById,
   forgetPassword,
-  confirmAdminEmail,
   confirmAdminForgetPass,
 } = require('../controller/admin.controller');
 
