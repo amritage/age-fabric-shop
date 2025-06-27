@@ -9,7 +9,7 @@ const admins = [
     password: bcrypt.hashSync('123456'),
     phone: '708-628-3122',
     role: 'Admin',
-    joiningData: new Date(),
+    joiningDate: new Date(),
   },
   {
     name: 'Alice B. Porter',
@@ -18,7 +18,7 @@ const admins = [
     password: bcrypt.hashSync('123456'),
     phone: '708-628-3122',
     role: 'Admin',
-    joiningData: new Date(),
+    joiningDate: new Date(),
   },
   {
     name: 'Corrie H. Cates',
@@ -27,7 +27,7 @@ const admins = [
     password: bcrypt.hashSync('123456'),
     phone: '708-628-3122',
     role: 'Admin',
-    joiningData: new Date(),
+    joiningDate: new Date(),
   },
   {
     name: 'Shawn E. Palmer',
@@ -36,7 +36,7 @@ const admins = [
     password: bcrypt.hashSync('123456'),
     phone: '902-628-3122',
     role: 'CEO',
-    joiningData: new Date(),
+    joiningDate: new Date(),
   },
   {
     name: 'Stacey J. Meikle',
@@ -45,7 +45,7 @@ const admins = [
     password: bcrypt.hashSync('123456'),
     phone: '102-628-3122',
     role: 'Manager',
-    joiningData: new Date(),
+    joiningDate: new Date(),
   },
 ];
 
