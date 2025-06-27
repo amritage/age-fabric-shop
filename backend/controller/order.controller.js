@@ -18,7 +18,6 @@ exports.paymentIntent = async (req, res, next) => {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -33,7 +32,6 @@ exports.addOrder = async (req, res, next) => {
       order: orderItems,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -46,7 +44,6 @@ exports.getOrders = async (req, res, next) => {
       data: orderItems,
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -56,7 +53,6 @@ exports.getSingleOrder = async (req, res, next) => {
     const orderItem = await Order.findById(req.params.id).populate('user');
     res.status(200).json(orderItem);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -80,7 +76,6 @@ exports.updateOrderStatus = async (req, res) => {
       message: 'Status updated successfully',
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };

@@ -218,7 +218,8 @@ exports.confirmForgetPassword = async (req, res, next) => {
         error: 'Token expired',
       });
     } else {
-      const newPassword = bcrypt.hashSync(password);
+      const saltRounds = 10;
+      const newPassword = bcrypt.hashSync(password, saltRounds);
       await User.updateOne(
         { confirmationToken: token },
         { $set: { password: newPassword } },
@@ -249,14 +250,16 @@ exports.changePassword = async (req, res, next) => {
       return res.status(404).json({ message: 'User not found' });
     }
     if (googleSignIn) {
-      const hashedPassword = bcrypt.hashSync(newPassword);
+      const saltRounds = 10;
+      const hashedPassword = bcrypt.hashSync(newPassword, saltRounds);
       await User.updateOne({ email: email }, { password: hashedPassword });
       return res.status(200).json({ message: 'Password changed successfully' });
     }
     if (!bcrypt.compareSync(password, user?.password)) {
       return res.status(401).json({ message: 'Incorrect current password' });
     } else {
-      const hashedPassword = bcrypt.hashSync(newPassword);
+      const saltRounds = 10;
+      const hashedPassword = bcrypt.hashSync(newPassword, saltRounds);
       await User.updateOne({ email: email }, { password: hashedPassword });
       res.status(200).json({ message: 'Password changed successfully' });
     }

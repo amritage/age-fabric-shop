@@ -50,7 +50,6 @@ const addMultipleImageCloudinary = async (req, res) => {
           : [],
     });
   } catch (err) {
-    console.log(err);
     res.status(500).send({
       success: false,
       message: 'Failed to upload image',

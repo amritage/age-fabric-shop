@@ -53,10 +53,8 @@ const importData = async () => {
     await Admin.deleteMany();
     await Admin.insertMany(adminData);
 
-    console.log('data inserted successfully!');
     process.exit();
   } catch (error) {
-    console.log('error', error);
     process.exit(1);
   }
 };
