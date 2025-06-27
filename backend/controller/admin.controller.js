@@ -9,6 +9,8 @@ const { generateToken } = require('../utils/token');
 const { sendEmail } = require('../config/email');
 const { secret } = require('../config/secret');
 
+const saltRounds = 10;
+
 // register
 const registerAdmin = async (req, res, next) => {
   try {
@@ -22,7 +24,7 @@ const registerAdmin = async (req, res, next) => {
         name: req.body.name,
         email: req.body.email,
         role: req.body.role,
-        password: bcrypt.hashSync(req.body.password),
+        password: bcrypt.hashSync(req.body.password, saltRounds),
       });
       const staff = await newStaff.save();
       const token = generateToken(staff);
@@ -129,7 +131,7 @@ const confirmAdminForgetPass = async (req, res, next) => {
         message: 'Token expired',
       });
     } else {
-      const newPassword = bcrypt.hashSync(password);
+      const newPassword = bcrypt.hashSync(password, saltRounds);
       await Admin.updateOne(
         { confirmationToken: token },
         { $set: { password: newPassword } },
@@ -161,7 +163,7 @@ const changePassword = async (req, res, next) => {
     if (!bcrypt.compareSync(oldPass, admin.password)) {
       return res.status(401).json({ message: 'Incorrect current password' });
     } else {
-      const hashedPassword = bcrypt.hashSync(newPass);
+      const hashedPassword = bcrypt.hashSync(newPass, saltRounds);
       await Admin.updateOne({ email: email }, { password: hashedPassword });
       res.status(200).json({ message: 'Password changed successfully' });
     }
@@ -182,7 +184,7 @@ const resetPassword = async (req, res) => {
           message: 'Token expired, please try again!',
         });
       } else {
-        staff.password = bcrypt.hashSync(req.body.newPassword);
+        staff.password = bcrypt.hashSync(req.body.newPassword, saltRounds);
         staff.save();
         res.send({
           message: 'Your password change successful, you can login now!',
@@ -203,7 +205,7 @@ const addStaff = async (req, res, next) => {
       const newStaff = new Admin({
         name: req.body.name,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password),
+        password: bcrypt.hashSync(req.body.password, saltRounds),
         phone: req.body.phone,
         joiningDate: req.body.joiningDate,
         role: req.body.role,
@@ -260,7 +262,7 @@ const updateStaff = async (req, res) => {
       admin.image = req.body.image;
       admin.password =
         req.body.password !== undefined
-          ? bcrypt.hashSync(req.body.password)
+          ? bcrypt.hashSync(req.body.password, saltRounds)
           : admin.password;
       const updatedAdmin = await admin.save();
       const token = generateToken(updatedAdmin);
