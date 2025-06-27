@@ -20,21 +20,19 @@ module.exports.sendEmail = (body, res, message) => {
       res.status(403).send({
         message: `Error happen when verify ${err.message}`,
       });
-      console.log(err.message);
-    } else {
-      console.log('Server is ready to take our messages');
+      return; // Stop if verification fails
     }
-  });
-
-  transporter.sendMail(body, (err, data) => {
-    if (err) {
-      res.status(403).send({
-        message: `Error happen when sending email ${err.message}`,
-      });
-    } else {
-      res.send({
-        message: message,
-      });
-    }
+    // Only send mail if verify succeeds
+    transporter.sendMail(body, (err, data) => {
+      if (err) {
+        res.status(403).send({
+          message: `Error happen when sending email ${err.message}`,
+        });
+      } else {
+        res.send({
+          message: message,
+        });
+      }
+    });
   });
 };

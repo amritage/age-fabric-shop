@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const Admin = require('../model/Admin');
+
 const admins = [
   {
     name: 'Dorothy R. Brown',
@@ -47,4 +49,12 @@ const admins = [
   },
 ];
 
-module.exports = admins;
+const isAdmin = async (req, res, next) => {
+  const user = await Admin.findById(req.user._id);
+  if (!user || user.role !== 'Admin') {
+    return res.status(403).json({ message: 'Access denied' });
+  }
+  next();
+};
+
+module.exports = { admins, isAdmin };

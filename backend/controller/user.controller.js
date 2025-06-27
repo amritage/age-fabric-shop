@@ -295,7 +295,10 @@ exports.updateUser = async (req, res, next) => {
 // signUpWithProvider
 exports.signUpWithProvider = async (req, res, next) => {
   try {
-    const payload = jwt.verify(req.params.token, process.env.JWT_SECRET);
+    const payload = jwt.verify(
+      req.params.token,
+      process.env.JWT_SECRET_FOR_VERIFY,
+    );
     const isAdded = await User.findOne({ email: payload.email });
     if (isAdded) {
       const token = generateToken(isAdded);
