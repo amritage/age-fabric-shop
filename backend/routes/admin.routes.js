@@ -30,18 +30,8 @@ router.patch(
 );
 router.post('/add', verifyToken, authorize('Admin'), addStaff);
 router.get('/all', verifyToken, authorize('Admin'), getAllStaff);
-router.patch(
-  '/forget-password',
-  verifyToken,
-  authorize('Admin'),
-  forgetPassword,
-);
-router.patch(
-  '/confirm-forget-password',
-  verifyToken,
-  authorize('Admin'),
-  confirmAdminForgetPass,
-);
+router.patch('/forget-password', forgetPassword);
+router.patch('/confirm-forget-password', confirmAdminForgetPass);
 router.get('/get/:id', verifyToken, authorize('Admin'), getStaffById);
 router.patch('/update-stuff/:id', verifyToken, authorize('Admin'), updateStaff);
 // router.put("/update-status/:id", verifyToken, authorize('Admin'), updatedStatus);

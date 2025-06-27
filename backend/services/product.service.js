@@ -74,10 +74,12 @@ exports.getOfferTimerProductService = async (query) => {
 
 // get popular product service by type
 exports.getPopularProductServiceByType = async (type) => {
-  const products = await Product.find({ productType: type })
-    .sort({ 'reviews.length': -1 })
-    .limit(8)
-    .populate('reviews');
+  const products = await Product.aggregate([
+    { $match: { productType: type } },
+    { $addFields: { reviewCount: { $size: '$reviews' } } },
+    { $sort: { reviewCount: -1 } },
+    { $limit: 8 },
+  ]).populate('reviews');
   return products;
 };
 
