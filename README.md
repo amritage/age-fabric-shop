@@ -57,6 +57,18 @@ npm test
 - Use a process manager (e.g., PM2) for production
 - Ensure MongoDB and all secrets are set
 
+### Docker
+
+You can run the server in a container. Build the image and start the container:
+
+```bash
+docker build -t age-fabric-shop .
+docker run -p 7000:7000 --env-file .env age-fabric-shop
+```
+
+Configure your environment variables in `.env` or directly in your hosting
+platform (e.g., Coolify).
+
 ## Folder Structure
 
 - `controller/` — Route controllers
