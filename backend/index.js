@@ -15,8 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 const BASE_URL = process.env.BASE_URL || 'http://localhost:7000';
 
-// Connect to database
-connectDB();
+// Connect to database when running the server directly
 
 // Middleware
 app.use(cors());
@@ -99,9 +98,11 @@ app.use((req, res) => {
 app.use(globalErrorHandler);
 
 if (require.main === module) {
+  connectDB();
   app.listen(PORT, () => {
     console.log(`🚀 Server running on ${BASE_URL}`);
   });
 }
 
 module.exports = app;
+module.exports.connectDB = connectDB;
