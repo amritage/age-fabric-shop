@@ -18,11 +18,8 @@ dayjs.extend(isSameOrAfter);
 module.exports.getOrderByUser = async (req, res, next) => {
   // console.log(req.user)
   try {
-    const { page, limit } = req.query;
-
-    const pages = Number(page) || 1;
-    const limits = Number(limit) || 8;
-    const skip = (pages - 1) * limits;
+    const { page = 1, limit = 10 } = req.query;
+    const skip = (page - 1) * limit;
 
     const totalDoc = await Order.countDocuments({ user: req.user._id });
 
@@ -85,7 +82,10 @@ module.exports.getOrderByUser = async (req, res, next) => {
     // today order amount
 
     // query for orders
-    const orders = await Order.find({ user: req.user._id }).sort({ _id: -1 });
+    const orders = await Order.find({ user: req.user._id })
+      .sort({ _id: -1 })
+      .skip(skip)
+      .limit(Number(limit));
 
     res.send({
       orders,

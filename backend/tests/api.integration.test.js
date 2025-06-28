@@ -12,21 +12,14 @@ describe('API Integration Tests', () => {
   let authToken;
 
   beforeAll(async () => {
-    // Connect to test database
-    await mongoose.connect(
-      process.env.MONGODB_URI_TEST || 'mongodb://localhost:27017/test',
-    );
-
-    // Start server
+    if (!process.env.MONGODB_URI_TEST) {
+      throw new Error(
+        'MONGODB_URI_TEST is not set. Please set it to a test database URI.',
+      );
+    }
+    await mongoose.connect(process.env.MONGODB_URI_TEST);
     server = app.listen(0);
-  });
 
-  afterAll(async () => {
-    await mongoose.connection.close();
-    server.close();
-  });
-
-  beforeEach(async () => {
     // Clear test data
     await User.deleteMany({});
     await Admin.deleteMany({});
@@ -47,6 +40,11 @@ describe('API Integration Tests', () => {
       password: 'admin123',
       role: 'Admin',
     });
+  });
+
+  afterAll(async () => {
+    await mongoose.connection.close();
+    server.close();
   });
 
   describe('Authentication', () => {

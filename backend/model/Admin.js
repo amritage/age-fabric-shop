@@ -67,7 +67,7 @@ adminSchema.methods.generateConfirmationToken = function () {
   const token = crypto.randomBytes(32).toString('hex');
   this.confirmationToken = token;
   const date = new Date();
-  date.setDate(date.getDate() + 1);
+  date.setMinutes(date.getMinutes() + 10);
   this.confirmationTokenExpires = date;
   return token;
 };

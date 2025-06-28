@@ -100,7 +100,7 @@ const forgetPassword = async (req, res, next) => {
       };
       admin.confirmationToken = token;
       const date = new Date();
-      date.setDate(date.getDate() + 1);
+      date.setMinutes(date.getMinutes() + 10);
       admin.confirmationTokenExpires = date;
       await admin.save({ validateBeforeSave: false });
       const message = 'Please check your email to reset password!';

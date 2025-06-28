@@ -12,6 +12,7 @@ exports.signup = async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
       res.send({ status: 'failed', message: 'Email already exists' });
+      return;
     } else {
       const saved_user = await User.create(req.body);
       const token = saved_user.generateConfirmationToken();
@@ -186,7 +187,7 @@ exports.forgetPassword = async (req, res, next) => {
       };
       user.confirmationToken = token;
       const date = new Date();
-      date.setDate(date.getDate() + 1);
+      date.setMinutes(date.getMinutes() + 10);
       user.confirmationTokenExpires = date;
       await user.save({ validateBeforeSave: false });
       const message = 'Please check your email to reset password!';

@@ -66,7 +66,7 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage,
   fileFilter,
-  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
 }).fields([
   { name: 'image', maxCount: 1 },
   { name: 'image1', maxCount: 1 },
@@ -134,6 +134,5 @@ router.get(
 router.get('/popular', newProductController.getPopularProducts);
 router.get('/offers', newProductController.getProductOffers);
 router.get('/toprated', newProductController.getTopRatedProducts);
-
 
 module.exports = router;
