@@ -15,8 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 const BASE_URL = process.env.BASE_URL || 'http://localhost:7000';
 
-// Connect to database
-connectDB();
+// Connect to database when running the server directly
 
 // Middleware
 app.use(cors());
@@ -28,6 +27,10 @@ app.use(morgan('dev'));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  '/public/images',
+  express.static(path.join(__dirname, 'public/images')),
+);
 
 // Serve uploaded images and videos from separate folders
 app.use(
@@ -94,18 +97,12 @@ app.use((req, res) => {
 // Global error handler
 app.use(globalErrorHandler);
 
-// Start server
-app
-  .listen(PORT, () => {
+if (require.main === module) {
+  connectDB();
+  app.listen(PORT, () => {
     console.log(`🚀 Server running on ${BASE_URL}`);
-  })
-  .on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use.`);
-      process.exit(1);
-    } else {
-      throw err;
-    }
   });
+}
 
 module.exports = app;
+module.exports.connectDB = connectDB;

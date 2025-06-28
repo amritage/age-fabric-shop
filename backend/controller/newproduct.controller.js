@@ -2,9 +2,8 @@ const NewProductModel = require('../model/newproductdata');
 
 const getMediaUrl = (filename, type) => {
   const BASE_URL = process.env.BASE_URL || 'http://localhost:7000';
- 
   const path = type === 'video' ? 'uploadvideo' : 'uploadimage';
-  return `${BASE_URL}/${filename}`;
+  return `${BASE_URL}/${path}/${filename}`;
 };
 
 // CREATE
@@ -17,11 +16,11 @@ exports.addProduct = async (req, res, next) => {
       slug: req.body.slug,
       name: req.body.name,
       newCategoryId: req.body.newCategoryId,
-      productdescription:req.body.productdescription,
-      popularproduct:req.body.popularproduct,
-      productoffer:req.body.productoffer,
-      topratedproduct:req.body.topratedproduct,
-      
+      productdescription: req.body.productdescription,
+      popularproduct: req.body.popularproduct,
+      productoffer: req.body.productoffer,
+      topratedproduct: req.body.topratedproduct,
+
       image: files.image
         ? getMediaUrl(files.image[0].filename, 'image')
         : req.body.image,
@@ -127,7 +126,8 @@ exports.getProductById = async (req, res, next) => {
 // UPDATE
 exports.updateProduct = async (req, res, next) => {
   try {
-    const id = req.params.id.trim();
+    const id =
+      typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
     const files = req.files || {};
 
     const updates = {
@@ -135,10 +135,10 @@ exports.updateProduct = async (req, res, next) => {
       slug: req.body.slug,
       name: req.body.name,
       newCategoryId: req.body.newCategoryId,
-      productdescription:req.body.productdescription, // new added product description
-      popularproduct:req.body.popularproduct,
-      productoffer:req.body.productoffer,
-      topratedproduct:req.body.topratedproduct,
+      productdescription: req.body.productdescription, // new added product description
+      popularproduct: req.body.popularproduct,
+      productoffer: req.body.productoffer,
+      topratedproduct: req.body.topratedproduct,
       structureId: req.body.structureId,
       contentId: req.body.contentId,
       gsm: req.body.gsm,
@@ -224,7 +224,8 @@ exports.updateProduct = async (req, res, next) => {
 // DELETE
 exports.deleteProduct = async (req, res, next) => {
   try {
-    const id = req.params.id.trim();
+    const id =
+      typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
     const deleted = await NewProductModel.findByIdAndDelete(id);
     if (!deleted) {
       return res.status(404).json({ error: 'Product not found' });
@@ -239,11 +240,14 @@ exports.deleteProduct = async (req, res, next) => {
 // SEARCH
 exports.searchProducts = async (req, res, next) => {
   const q = req.params.q || '';
+  // Escape regex special characters
+  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const safeQ = escapeRegex(q);
   try {
     const results = await NewProductModel.find({
       $or: [
-        { name: { $regex: q, $options: 'i' } },
-        { keywords: { $regex: q, $options: 'i' } },
+        { name: { $regex: safeQ, $options: 'i' } },
+        { keywords: { $regex: safeQ, $options: 'i' } },
       ],
     });
     res.status(200).json({ status: 1, data: results });
@@ -670,15 +674,11 @@ exports.getProductsByPurchasePriceValue = async (req, res, next) => {
 // ✅ GET products where all three flags are 'yes'
 const commonFilter = {
   popularproduct: 'yes',
- 
 };
 const commonFilter1 = {
-  
   productoffer: 'yes',
- 
 };
 const commonFilter2 = {
- 
   topratedproduct: 'yes',
 };
 
@@ -688,7 +688,9 @@ exports.getPopularProducts = async (req, res) => {
     const products = await NewProductModel.find(commonFilter);
     res.status(200).json({ status: 1, data: products });
   } catch (error) {
-    res.status(500).json({ status: 0, message: 'Error fetching popular products' });
+    res
+      .status(500)
+      .json({ status: 0, message: 'Error fetching popular products' });
   }
 };
 
@@ -698,7 +700,9 @@ exports.getProductOffers = async (req, res) => {
     const products = await NewProductModel.find(commonFilter1);
     res.status(200).json({ status: 1, data: products });
   } catch (error) {
-    res.status(500).json({ status: 0, message: 'Error fetching offer products' });
+    res
+      .status(500)
+      .json({ status: 0, message: 'Error fetching offer products' });
   }
 };
 
@@ -708,6 +712,8 @@ exports.getTopRatedProducts = async (req, res) => {
     const products = await NewProductModel.find(commonFilter2);
     res.status(200).json({ status: 1, data: products });
   } catch (error) {
-    res.status(500).json({ status: 0, message: 'Error fetching top-rated products' });
+    res
+      .status(500)
+      .json({ status: 0, message: 'Error fetching top-rated products' });
   }
 };
