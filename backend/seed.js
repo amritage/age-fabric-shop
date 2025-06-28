@@ -57,6 +57,7 @@ const importData = async () => {
     await mongoose.connection.close();
     process.exit();
   } catch (error) {
+    console.error('Seeding failed:', error);
     process.exit(1);
   }
 };
