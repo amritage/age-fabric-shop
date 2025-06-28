@@ -4,14 +4,20 @@
 
 1. Clone the repo
 2. Run `npm install`
-3. Create `.env` file (see `.env.example`)
-4. Run server: `npm run dev`
+3. Add `.env` file (see `.env.example`)
+4. Run: `npm run start-dev`
+
+## Project Structure
+
+- `backend`: Express API
+- `admin`: Admin Panel (Next.js)
+- `frontend`: Public Website (Next.js)
 
 ## Features
 
-- Secure Auth
-- Admin Panel
-- Cloudinary upload
+- Image & video uploads
+- Authentication (admin, user)
+- JWT & Email integration
 
 ## Prerequisites
 

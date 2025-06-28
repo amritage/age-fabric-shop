@@ -57,7 +57,7 @@ exports.getSingleOrder = async (req, res, next) => {
   }
 };
 
-exports.updateOrderStatus = async (req, res) => {
+exports.updateOrderStatus = async (req, res, next) => {
   const newStatus = req.body.status;
   try {
     await Order.updateOne(

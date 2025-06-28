@@ -139,6 +139,9 @@ describe('API Integration Tests', () => {
         description: 'Test description',
         brand: { name: 'Test Brand', id: new mongoose.Types.ObjectId() },
         category: { name: 'Test Category', id: new mongoose.Types.ObjectId() },
+        img: 'https://example.com/image.jpg',
+        unit: 'piece',
+        parent: 'parent-category',
       });
 
       const response = await request(app).get(

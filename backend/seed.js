@@ -53,6 +53,7 @@ const importData = async () => {
     await Admin.deleteMany();
     await Admin.insertMany(adminData);
 
+    await mongoose.connection.close();
     process.exit();
   } catch (error) {
     process.exit(1);
