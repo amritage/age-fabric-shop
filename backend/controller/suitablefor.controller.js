@@ -26,7 +26,8 @@ exports.viewSuitablefors = async (req, res) => {
 
 // UPDATE by ID
 exports.updateSuitablefor = async (req, res) => {
-  const id = req.params.id.trim();
+  const id =
+    typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
   try {
     const updated = await Suitablefor.findByIdAndUpdate(
       id,
@@ -43,7 +44,8 @@ exports.updateSuitablefor = async (req, res) => {
 
 // DELETE by ID
 exports.deleteSuitablefor = async (req, res) => {
-  const id = req.params.id.trim();
+  const id =
+    typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
   try {
     const deleted = await Suitablefor.findByIdAndDelete(id);
     if (!deleted) return res.status(404).json({ error: 'Not found' });
@@ -56,7 +58,8 @@ exports.deleteSuitablefor = async (req, res) => {
 
 // GET ONE by ID
 exports.getSuitableforById = async (req, res) => {
-  const id = req.params.id.trim();
+  const id =
+    typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
   try {
     const item = await Suitablefor.findById(id);
     if (!item) {

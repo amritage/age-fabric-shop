@@ -159,8 +159,12 @@ exports.updateProductService = async (id, currProduct) => {
     product.productType = currProduct.productType;
     product.description = currProduct.description;
     product.additionalInformation = currProduct.additionalInformation;
-    product.offerDate.startDate = currProduct.offerDate.startDate;
-    product.offerDate.endDate = currProduct.offerDate.endDate;
+    if (currProduct.offerDate) {
+      product.offerDate = {
+        startDate: currProduct.offerDate.startDate,
+        endDate: currProduct.offerDate.endDate,
+      };
+    }
 
     await product.save();
   }

@@ -126,7 +126,8 @@ exports.getProductById = async (req, res, next) => {
 // UPDATE
 exports.updateProduct = async (req, res, next) => {
   try {
-    const id = req.params.id.trim();
+    const id =
+      typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
     const files = req.files || {};
 
     const updates = {
@@ -223,7 +224,8 @@ exports.updateProduct = async (req, res, next) => {
 // DELETE
 exports.deleteProduct = async (req, res, next) => {
   try {
-    const id = req.params.id.trim();
+    const id =
+      typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
     const deleted = await NewProductModel.findByIdAndDelete(id);
     if (!deleted) {
       return res.status(404).json({ error: 'Product not found' });
@@ -238,11 +240,14 @@ exports.deleteProduct = async (req, res, next) => {
 // SEARCH
 exports.searchProducts = async (req, res, next) => {
   const q = req.params.q || '';
+  // Escape regex special characters
+  const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const safeQ = escapeRegex(q);
   try {
     const results = await NewProductModel.find({
       $or: [
-        { name: { $regex: q, $options: 'i' } },
-        { keywords: { $regex: q, $options: 'i' } },
+        { name: { $regex: safeQ, $options: 'i' } },
+        { keywords: { $regex: safeQ, $options: 'i' } },
       ],
     });
     res.status(200).json({ status: 1, data: results });
