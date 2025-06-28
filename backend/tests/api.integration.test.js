@@ -121,14 +121,14 @@ describe('API Integration Tests', () => {
   });
 
   describe('Product Routes', () => {
-    test('GET /api/products - should get all products', async () => {
-      const response = await request(app).get('/api/products');
+    test('GET /api/product - should get all products', async () => {
+      const response = await request(app).get('/api/product');
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('data');
     });
 
-    test('GET /api/products/:id - should get single product', async () => {
+    test('GET /api/product/:id - should get single product', async () => {
       // Create a test product first
       const testProduct = await Product.create({
         title: 'Test Product',
@@ -145,7 +145,7 @@ describe('API Integration Tests', () => {
       });
 
       const response = await request(app).get(
-        `/api/products/${testProduct._id}`,
+        `/api/product/${testProduct._id}`,
       );
 
       expect(response.status).toBe(200);

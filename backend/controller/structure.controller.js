@@ -8,7 +8,7 @@ exports.addStructure = async (req, res) => {
     const saved = await struct.save();
     res.json(saved);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -18,7 +18,7 @@ exports.viewStructures = async (req, res) => {
     const list = await Structure.find();
     res.json({ status: 1, data: list });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -39,7 +39,7 @@ exports.updateStructure = async (req, res) => {
 
     res.status(200).json({ status: 1, data: updated });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -51,7 +51,7 @@ exports.deleteStructure = async (req, res) => {
     if (!deleted) return res.status(404).json({ error: 'Not found' });
     res.json({ status: 1, data: deleted });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -65,6 +65,6 @@ exports.getStructureById = async (req, res) => {
     }
     res.json({ status: 1, data: structure });
   } catch (err) {
-    res.status(500).json({ status: 0, error: err.message });
+    next(err);
   }
 };

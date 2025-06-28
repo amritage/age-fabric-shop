@@ -33,7 +33,7 @@ router.get('/all', verifyToken, authorize('Admin'), getAllStaff);
 router.patch('/forget-password', forgetPassword);
 router.patch('/confirm-forget-password', confirmAdminForgetPass);
 router.get('/get/:id', verifyToken, authorize('Admin'), getStaffById);
-router.patch('/update-stuff/:id', verifyToken, authorize('Admin'), updateStaff);
+router.patch('/update-staff/:id', verifyToken, authorize('Admin'), updateStaff);
 // router.put("/update-status/:id", verifyToken, authorize('Admin'), updatedStatus);
 router.delete('/:id', verifyToken, authorize('Admin'), deleteStaff);
 

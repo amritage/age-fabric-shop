@@ -94,18 +94,10 @@ app.use((req, res) => {
 // Global error handler
 app.use(globalErrorHandler);
 
-// Start server
-app
-  .listen(PORT, () => {
+if (require.main === module) {
+  app.listen(PORT, () => {
     console.log(`🚀 Server running on ${BASE_URL}`);
-  })
-  .on('error', (err) => {
-    if (err.code === 'EADDRINUSE') {
-      console.error(`❌ Port ${PORT} is already in use.`);
-      process.exit(1);
-    } else {
-      throw err;
-    }
   });
+}
 
 module.exports = app;

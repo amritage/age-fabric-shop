@@ -9,7 +9,7 @@ exports.addSuitablefor = async (req, res) => {
     res.status(201).json(saved);
   } catch (err) {
     console.error('Error adding suitablefor:', err);
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -20,7 +20,7 @@ exports.viewSuitablefors = async (req, res) => {
     res.json({ status: 1, data: list });
   } catch (err) {
     console.error('Error fetching suitablefors:', err);
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -37,7 +37,7 @@ exports.updateSuitablefor = async (req, res) => {
     res.json({ status: 1, data: updated });
   } catch (err) {
     console.error('Error updating suitablefor:', err);
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -50,7 +50,7 @@ exports.deleteSuitablefor = async (req, res) => {
     res.json({ status: 1, data: deleted });
   } catch (err) {
     console.error('Error deleting suitablefor:', err);
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
@@ -67,6 +67,6 @@ exports.getSuitableforById = async (req, res) => {
     res.json({ status: 1, data: item });
   } catch (err) {
     console.error('Error fetching suitablefor by ID:', err);
-    res.status(500).json({ status: 0, error: err.message });
+    next(err);
   }
 };

@@ -50,7 +50,9 @@ exports.getOrders = async (req, res, next) => {
 // get Orders
 exports.getSingleOrder = async (req, res, next) => {
   try {
-    const orderItem = await Order.findById(req.params.id).populate('user');
+    const id =
+      typeof req.params.id === 'string' ? req.params.id.trim() : req.params.id;
+    const orderItem = await Order.findById(id).populate('user');
     res.status(200).json(orderItem);
   } catch (error) {
     next(error);
